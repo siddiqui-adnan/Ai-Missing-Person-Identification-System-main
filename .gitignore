@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment Variables (SENSITIVE - SMTP credentials)
+.env
+
+# Database (contains user data)
+*.db
+*.sqlite
+*.sqlite3
+
+# Machine Learning Cache
+*.pkl
+classifier_cache.txt
+
+# Application Data (User uploads - keep local)
+resources/
+logs/
+backups/
+
+# Log Files
+*.log
+
+# Streamlit Secrets (SENSITIVE)
+.streamlit/secrets.toml
+
+# Email Configuration (SENSITIVE - credentials)
+# email_settings.txt
+
+# IDE
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+~*

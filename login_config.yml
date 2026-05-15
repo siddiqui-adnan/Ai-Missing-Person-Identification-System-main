@@ -1,0 +1,30 @@
+cookie:
+  expiry_days: 1
+  key: a8f3d2e1b9c7f4a0e5d6c3b2a1f8e7d4c9b0a3f2e1d8c7b6a5f4e3d2c1b0a9
+  name: random_cookie_name
+credentials:
+  usernames:
+    mit:
+      area: MIT
+      city: Chh. Sambhajinagar
+      email: missingpersonidentificationsys@gmail.com
+      name: AI MISSING PERSON IDENTIFICATION SYSTEM
+      password: '123'
+      role: Admin
+    public:
+      area: General Public
+      city: Anywhere
+      email: public@missingperson.com
+      name: Public User
+      password: 'public'
+      role: Public
+    complainant:
+      area: Family Services
+      city: Anywhere
+      email: complainant@missingperson.com
+      name: Complainant User
+      password: 'complainant'
+      role: Complainant
+preauthorized:
+  emails:
+  - missingpersonidentificationsys@gmail.com

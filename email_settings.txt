@@ -1,0 +1,22 @@
+# Email Configuration for Missing Person Identification System
+# IMPORTANT: Edit these settings with your actual email credentials
+
+# SMTP Server Settings (Gmail Example)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=missingpersonidentificationsys@gmail.com
+SMTP_PASSWORD=iiztiqhrjbwmgulb
+
+# Default notification email (optional)
+NOTIFY_EMAIL=missingpersonidentificationsys@gmail.com
+
+# Common SMTP settings:
+# Gmail: smtp.gmail.com:587 (Requires App Password)
+# Outlook: smtp-mail.outlook.com:587
+# Yahoo: smtp.mail.yahoo.com:587
+
+# Gmail Setup Instructions:
+# 1. Enable 2-Factor Authentication on your Gmail account
+# 2. Generate App Password: Google Account → Security → App Passwords
+# 3. Use 16-character app password (NOT your regular password)
+# 4. Replace "your-email@gmail.com" and "your-16-character-app-password" above
