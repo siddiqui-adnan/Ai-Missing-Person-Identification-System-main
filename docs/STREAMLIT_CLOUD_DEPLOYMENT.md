@@ -14,6 +14,14 @@ This guide covers deploying the AI Missing Person Identification System on Strea
 
 ## 📋 Deployment Checklist
 
+### ✅ Fixed Issues (May 2026)
+
+**Error: "installer returned a non-zero exit code"**
+- ✅ Removed conflicting system packages from `packages.txt`
+- ✅ Removed strict version upper bounds in `requirements.txt`
+- ✅ Used flexible minimum versions for better wheel compatibility
+- ✅ Removed `python3-opencv` (conflicts with opencv-python-headless)
+
 ### 1. Verify Local Files Are Correct
 
 Ensure these files exist in your repository root:
@@ -55,26 +63,34 @@ libxext6
 libxrender-dev
 libgomp1
 libgl1-mesa-glx
-python3-opencv
 ```
 
-These are required for:
-- OpenCV (cv2) to function
-- MediaPipe face detection
-- Image processing libraries
+**Note:** 
+- Removed `python3-opencv` (conflicts with pip's `opencv-python-headless`)
+- All packages are essential for OpenCV, MediaPipe, and system libraries
+- No duplicates to avoid build issues
 
 ### `requirements.txt`
-Python packages with version ranges (not exact pins):
+Python packages with flexible minimum versions (no upper bounds):
 
 ```
-streamlit>=1.28.0,<2.0
-opencv-python-headless>=4.8.0,<5.0
-mediapipe>=0.10.0,<1.0
-pandas>=2.1.0,<3.0
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.2.0
+pillow>=9.5.0
+opencv-python-headless>=4.7.0
+mediapipe>=0.10.0
+streamlit>=1.28.0
+streamlit-authenticator>=0.2.0
+sqlmodel>=0.0.8
 ...
 ```
 
-**Why version ranges?** Streamlit Cloud needs flexibility to find compatible binary wheels for the Ubuntu environment.
+**Why flexible versions?** 
+- Cloud needs flexibility to find compatible binary wheels for Ubuntu
+- Exact upper bounds (e.g., `<2.0`) prevent dependency resolution
+- Minimum versions ensure required features are available
+- Removed unused packages: cryptography, validators, bleach, jinja2 (reduced conflicts)
 
 ### `.streamlit/config.toml`
 Streamlit configuration for cloud:
@@ -95,12 +111,23 @@ enableCORS = false
 
 ### Issue 1: "installer returned a non-zero exit code"
 
-**Cause:** Package versions can't be found on cloud platform
+**Cause:** Package dependency conflicts or version incompatibilities on cloud platform
 
-**Solution:**
-- Use version ranges: `package>=X.Y.Z,<X+1` instead of exact pins
-- Remove unused packages from requirements.txt
-- Verify packages.txt has all system dependencies
+**Solution (FIXED as of May 2026):**
+- ✅ Updated `requirements.txt` with flexible minimum versions (no upper bounds)
+- ✅ Fixed `packages.txt` to remove conflicting system packages
+- ✅ Removed unused packages that cause conflicts
+
+**If still getting this error:**
+1. Ensure all changes are pushed: `git push origin main`
+2. Click "Manage app" → "Reboot app" on Streamlit Cloud
+3. Wait 5-10 minutes (cold start rebuilds dependencies)
+4. Check logs: "Manage app" → "View logs"
+
+**If error persists after reboot:**
+- Ensure `packages.txt` has NO `python3-opencv` line
+- Ensure `requirements.txt` uses only `>=` (no `<` upper bounds)
+- Try removing one heavy package (e.g., scikit-learn) temporarily to test
 
 ### Issue 2: "libGL.so.1 not found" or "libGLESv2 not found"
 
