@@ -6,13 +6,16 @@ import urllib.request
 os.environ['OPENCV_IO_ENABLE_OPENEXR'] = '0'
 os.environ['OPENCV_IO_ENABLE_JASPER'] = '0'
 os.environ['OPENCV_VIDEOIO_PRIORITY_MSMF'] = '0'
+
 # Force software rendering for MediaPipe to avoid GPU/OpenGL issues
 os.environ['MEDIAPIPE_DISABLE_GPU'] = '1'
 os.environ['GLOG_minloglevel'] = '2'  # Suppress MediaPipe warnings
-# Additional environment variables to prevent OpenGL/GLES issues
-os.environ['LD_PRELOAD'] = ''
-os.environ['MESA_GL_VERSION_OVERRIDE'] = '3.3'
-os.environ['MESA_GLSL_VERSION_OVERRIDE'] = '330'
+
+# Software rendering configuration for better Linux/WSL compatibility
+os.environ['MESA_GL_VERSION_OVERRIDE'] = '4.1'
+os.environ['MESA_GLSL_VERSION_OVERRIDE'] = '410'
+os.environ['LIBGL_ALWAYS_INDIRECT'] = '1'  # Force indirect rendering on Linux
+os.environ['GALLIUM_DRIVER'] = 'llvmpipe'  # Use LLVM pipe for software rendering
 
 import cv2
 import PIL
@@ -120,11 +123,24 @@ def detect_all_faces(image: np.ndarray, max_faces: int = 5):
     except Exception as e:
         error_msg = str(e)
         if "libGLESv2" in error_msg or "libGL" in error_msg:
-            st.error(f"❌ Face detection failed due to missing OpenGL libraries")
-            st.info("**Solution:** Install required libraries:")
-            st.code("sudo apt-get update && sudo apt-get install -y libgles2-mesa libgles2-mesa-dev libgl1-mesa-glx", language="bash")
+            st.error("❌ **Face detection failed due to missing OpenGL libraries**")
+            st.info("""
+**Quick Fix for Linux/WSL:**
+```bash
+sudo apt-get update && sudo apt-get install -y libgles2-mesa libgles2-mesa-dev libgl1-mesa-glx libglib2.0-0
+```
+After installation, restart the application.
+
+**For detailed troubleshooting:**
+See `docs/LINUX_WSL_SETUP.md` for comprehensive setup instructions.
+            """)
         else:
             st.error(f"❌ Face detection failed: {error_msg}")
+            st.warning("""
+This may be due to missing system libraries. If you're on Linux/WSL:
+1. Check `docs/LINUX_WSL_SETUP.md` for detailed setup instructions
+2. Run the verification script: `python scripts/verify_setup.py`
+            """)
         return []
 
     faces = []

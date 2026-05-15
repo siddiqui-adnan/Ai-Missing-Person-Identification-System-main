@@ -4,6 +4,15 @@ A professional AI-powered web application for managing and identifying missing p
 
 ---
 
+## 🚨 Having Issues?
+
+**Seeing OpenGL/face detection errors on Linux/WSL?**
+- ⚡ [Quick Fix Guide](./QUICK_FIX.md) - One command to fix most issues
+- 📖 [Complete Linux/WSL Setup](./LINUX_WSL_SETUP.md) - Detailed troubleshooting steps
+- ✅ [Verify Setup](../scripts/verify_setup.py) - Run: `python scripts/verify_setup.py`
+
+---
+
 ## ✨ Features
 
 ### 🎯 Core Functionality
@@ -290,35 +299,42 @@ Default: 3.0
 
 ## 🐛 Troubleshooting
 
+### Linux/WSL Setup Issues
+
+For comprehensive Linux/WSL setup instructions and troubleshooting, see: **[LINUX_WSL_SETUP.md](./LINUX_WSL_SETUP.md)**
+
+This includes:
+- Complete OpenGL library installation
+- Step-by-step verification
+- System dependency checks
+- Performance optimization tips
+
 ### Common Issues
 
-**libGLESv2.so.2 error (Linux systems):**
+**libGLESv2.so.2 error (Linux/WSL systems):**
 
 If you see: `libGLESv2.so.2: cannot open shared object file: No such file or directory`
 
 This is caused by missing OpenGL ES libraries required by MediaPipe. Install them based on your Linux distribution:
 
-**Ubuntu/Debian:**
+**Ubuntu/Debian (Quick Fix):**
 ```bash
-sudo apt-get update
-sudo apt-get install -y libgles2-mesa libgles2-mesa-dev
+sudo apt-get update && sudo apt-get install -y libgles2-mesa libgles2-mesa-dev libgl1-mesa-glx libglib2.0-0
 ```
 
 **Fedora/RHEL/CentOS:**
 ```bash
-sudo dnf install -y mesa-libGLES mesa-libGLES-devel
+sudo dnf install -y mesa-libGLES mesa-libGLES-devel libglvnd-glx
 ```
 
 **Arch Linux:**
 ```bash
-sudo pacman -S mesa
+sudo pacman -S mesa glib2
 ```
 
-**Alternative solution (if above doesn't work):**
-```bash
-# Install full Mesa OpenGL libraries
-sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
-```
+**For WSL2 users:**
+
+If you're running on WSL2, also see the detailed guide above for GPU and performance setup.
 
 After installation, restart the application.
 
