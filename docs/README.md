@@ -186,6 +186,24 @@ run_app.bat
 
 ---
 
+## ☁️ Cloud Deployment (Streamlit Cloud)
+
+Deploy the application on **Streamlit Cloud** for free hosting:
+
+1. **Push code to GitHub**
+2. **Go to [share.streamlit.io](https://share.streamlit.io)**
+3. **Click "New app" and select your repository**
+4. **Done!** Your app will be live in 2-3 minutes
+
+**Important Files for Deployment:**
+- `packages.txt` - System dependencies (auto-detected)
+- `requirements.txt` - Python packages with version ranges
+- `.streamlit/config.toml` - Streamlit configuration
+
+⚠️ **If deployment fails:** Check [STREAMLIT_CLOUD_DEPLOYMENT.md](./STREAMLIT_CLOUD_DEPLOYMENT.md) for troubleshooting.
+
+---
+
 ## 🔐 Default Login
 
 **Admin Access:**

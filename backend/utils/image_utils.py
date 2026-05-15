@@ -11,13 +11,29 @@ os.environ['OPENCV_VIDEOIO_PRIORITY_MSMF'] = '0'
 os.environ['MEDIAPIPE_DISABLE_GPU'] = '1'
 os.environ['GLOG_minloglevel'] = '2'  # Suppress MediaPipe warnings
 
-# Software rendering configuration for better Linux/WSL compatibility
-os.environ['MESA_GL_VERSION_OVERRIDE'] = '4.1'
-os.environ['MESA_GLSL_VERSION_OVERRIDE'] = '410'
-os.environ['LIBGL_ALWAYS_INDIRECT'] = '1'  # Force indirect rendering on Linux
-os.environ['GALLIUM_DRIVER'] = 'llvmpipe'  # Use LLVM pipe for software rendering
+# Linux/WSL-specific software rendering configuration
+# Only apply on Linux to avoid issues on cloud platforms
+if sys.platform.startswith('linux'):
+    os.environ['MESA_GL_VERSION_OVERRIDE'] = '4.1'
+    os.environ['MESA_GLSL_VERSION_OVERRIDE'] = '410'
+    os.environ['LIBGL_ALWAYS_INDIRECT'] = '1'  # Force indirect rendering on Linux
+    os.environ['GALLIUM_DRIVER'] = 'llvmpipe'  # Use LLVM pipe for software rendering
 
-import cv2
+try:
+    import cv2
+except ImportError as e:
+    # Provide diagnostic information about cv2 import failure
+    import sys
+    print(f"ERROR: Failed to import cv2: {e}", file=sys.stderr)
+    print(f"Python: {sys.version}", file=sys.stderr)
+    print(f"Platform: {sys.platform}", file=sys.stderr)
+    raise RuntimeError(
+        f"OpenCV (cv2) import failed. This is likely due to missing system libraries. "
+        f"Error: {str(e)}\n"
+        f"On Streamlit Cloud: packages.txt may need system dependencies.\n"
+        f"On local Linux/WSL: Install libglib2.0-0 and other dependencies (see docs/LINUX_WSL_SETUP.md)"
+    ) from e
+
 import PIL
 import PIL.ImageDraw
 import numpy as np
